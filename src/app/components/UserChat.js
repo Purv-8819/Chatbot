@@ -5,7 +5,7 @@ export default function UserChat() {
         <div className="rounded-full bg-gray-100 border p-1"></div>
       </span>
       <p className="leading-relaxed">
-        <span className="block font-bold text-gray-700">You </span>fewafef
+        <span className="block font-bold text-gray-700">You </span>Different
       </p>
     </div>
   );
