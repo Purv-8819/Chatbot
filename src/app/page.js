@@ -1,4 +1,5 @@
 "use client";
+const APIKEY = process.env.NEXT_PUBLIC_OPENROUTER_API_KEY;
 
 import { Box, Button, Stack, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -63,7 +64,7 @@ export default function Home() {
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer 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`,
+            Authorization: `Bearer ${APIKEY}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
