@@ -2,6 +2,8 @@
 
 import { Box, Button, Stack, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
+import AIChat from "./components/AIChat";
+import UserChat from "./components/UserChat";
 
 export default function Home() {
   const [messages, setMessages] = useState([
@@ -42,7 +44,8 @@ export default function Home() {
     });
   };
 
-  const sendMessage = async () => {
+  const sendMessage = async (e) => {
+    e.preventDefault();
     if (!message.trim()) return; // Don't send empty messages
 
     setMessage("");
@@ -109,67 +112,78 @@ export default function Home() {
       ]);
     }
     console.log("DONE");
+    console.log(messages);
   };
 
   return (
-    <Box
-      width="100vw"
-      height="100vh"
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <Stack
-        direction={"column"}
-        width="500px"
-        height="700px"
-        border="1px solid black"
-        p={2}
-        spacing={3}
-      >
-        <Stack
-          direction={"column"}
-          spacing={2}
-          flexGrow={1}
-          overflow="auto"
-          maxHeight="100%"
-        >
-          {messages.map((message, index) => (
-            <Box
-              key={index}
-              display="flex"
-              justifyContent={
-                message.role === "assistant" ? "flex-start" : "flex-end"
-              }
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      {/* <div className="fixed bottom-[calc(4rem+1.5rem)] right-0 mr-4 bg-white p-6 rounded-lg border border-[#e5e7eb] w-[440px] h-[634px]"> */}
+      <div className="right-0 mr-4 bg-white p-6 rounded-lg border border-[#e5e7eb] w-[75vw] h-[80vh]">
+        {/* <!-- Heading --> */}
+        <div className="flex flex-col space-y-1.5 pb-6">
+          <h2 className="font-semibold text-lg tracking-tight">Chatbot</h2>
+          <p className="text-sm text-[#6b7280] leading-3">
+            Powered by Mendable and Vercel
+          </p>
+        </div>
+
+        {/* <!-- Chat Container --> */}
+        <div className="pr-4 h-[474px]">
+          {/* <!-- Chat Message AI --> */}
+          {/* <div className="flex gap-3 my-4 text-gray-600 text-sm flex-1">
+            <span className="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8">
+              <div className="rounded-full bg-gray-100 border p-1"></div>
+            </span>
+            <p className="leading-relaxed">
+              <span className="block font-bold text-gray-700">AI </span>Hi, how
+              can I help you today?
+            </p>
+          </div> */}
+          <AIChat></AIChat>
+
+          {/* <!--  User Chat Message --> */}
+          {/* <div className="flex gap-3 my-4 text-gray-600 text-sm flex-1">
+            <span className="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8">
+              <div className="rounded-full bg-gray-100 border p-1"></div>
+            </span>
+            <p className="leading-relaxed">
+              <span className="block font-bold text-gray-700">You </span>fewafef
+            </p>
+          </div> */}
+          <UserChat></UserChat>
+          {/* <!-- Ai Chat Message  --> */}
+          <div className="flex gap-3 my-4 text-gray-600 text-sm flex-1">
+            <span className="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8">
+              <div className="rounded-full bg-gray-100 border p-1"></div>
+            </span>
+            <p className="leading-relaxed">
+              <span className="block font-bold text-gray-700">AI </span>Sorry, I
+              couldn't find any information in the documentation about that.
+              Expect answer to be less accurateI could not find the answer to
+              this in the verified sources.
+            </p>
+          </div>
+        </div>
+        {/* <!-- Input box  --> */}
+        <div className="flex items-center pt-0">
+          <form className="flex items-center justify-center w-full space-x-2">
+            <input
+              className="flex h-10 w-full rounded-md border border-[#e5e7eb] px-3 py-2 text-sm placeholder-[#6b7280] focus:outline-none focus:ring-2 focus:ring-[#9ca3af] disabled:cursor-not-allowed disabled:opacity-50 text-[#030712] focus-visible:ring-offset-2"
+              placeholder="Type your message"
+              value={message}
+              onChange={(e) => {
+                setMessage(e.target.value);
+              }}
+            />
+            <button
+              className="inline-flex items-center justify-center rounded-md text-sm font-medium text-[#f9fafb] disabled:pointer-events-none disabled:opacity-50 bg-black hover:bg-[#111827E6] h-10 px-4 py-2"
+              onClick={sendMessage}
             >
-              <Box
-                bgcolor={
-                  message.role === "assistant"
-                    ? "primary.main"
-                    : "secondary.main"
-                }
-                color="white"
-                borderRadius={16}
-                p={3}
-              >
-                {message.content}
-              </Box>
-            </Box>
-          ))}
-        </Stack>
-        <Stack direction={"row"} spacing={2}>
-          <TextField
-            label="Message"
-            fullWidth
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-          <Button variant="contained" onClick={sendMessage}>
-            Send
-          </Button>
-        </Stack>
-      </Stack>
-    </Box>
+              Send
+            </button>
+          </form>
+        </div>
+      </div>
+    </main>
   );
 }
