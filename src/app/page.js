@@ -78,29 +78,38 @@ export default function Home() {
         throw new Error("Network response was not ok");
       }
 
+      // console.log(response.body.getReader().read());
+
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
+      var val;
 
       while (true) {
-        console.log("HERE");
         const { done, value } = await reader.read();
         if (done) break;
-        const text = decoder.decode(value, { stream: true });
-        console.log(JSON.parse(text));
-        setMessages((messages) => {
-          let lastMessage = messages[messages.length - 1];
-          let otherMessages = messages.slice(0, messages.length - 1);
-          return [
-            ...otherMessages,
-            {
-              ...lastMessage,
-              content:
-                lastMessage.content +
-                JSON.parse(text).choices[0].message.content,
-            },
-          ];
-        });
+        console.log(value);
+        val = value;
       }
+
+      console.log(val);
+      const text = decoder.decode(val);
+      console.log(text.trim());
+      console.log(JSON.parse(text.trim()));
+
+      setMessages((messages) => {
+        let lastMessage = messages[messages.length - 1];
+        let otherMessages = messages.slice(0, messages.length - 1);
+        console.log(text);
+        return [
+          ...otherMessages,
+          {
+            ...lastMessage,
+            content:
+              lastMessage.content +
+              JSON.parse(text.trim()).choices[0].message.content,
+          },
+        ];
+      });
     } catch (error) {
       console.error("Error:", error);
       setMessages((messages) => [
