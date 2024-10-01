@@ -1,7 +1,7 @@
 "use client";
 const APIKEY = process.env.NEXT_PUBLIC_OPENROUTER_API_KEY;
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AIChat from "./components/AIChat";
 import UserChat from "./components/UserChat";
 import Loading from "./components/Loading";
@@ -16,9 +16,18 @@ export default function Home() {
   ]);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    // Scroll to the section after count reaches 5
+    sectionRef.current?.scrollIntoView({ behavior: "smooth" });
+    console.log("HERE");
+  }, messages);
 
   const sendMessage = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
     if (!message.trim()) return; // Don't send empty messages
 
     setMessage("");
@@ -39,7 +48,14 @@ export default function Home() {
           },
           body: JSON.stringify({
             model: "meta-llama/llama-3.1-8b-instruct:free",
-            messages: [{ role: "user", content: message }],
+            messages: [
+              {
+                role: "system",
+                content:
+                  "You are a helping chatbot who always responds markdown",
+              },
+              { role: "user", content: message },
+            ],
           }),
         }
       );
@@ -51,8 +67,6 @@ export default function Home() {
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       var val;
-
-      setLoading(true);
 
       while (true) {
         const { done, value } = await reader.read();
@@ -101,8 +115,7 @@ export default function Home() {
         </div>
 
         {/* <!-- Chat Container --> */}
-        <div className="p-4 h-[474px] overflow-y-scroll">
-          {/* Print out all the messages in the log and format properl*/}
+        <div id="container" className="p-4 h-5/6 overflow-y-scroll">
           <ul>
             {messages.map((item, id) => (
               <li key={id}>
@@ -111,9 +124,9 @@ export default function Home() {
                 ) : (
                   <AIChat text={item.content} />
                 )}
-                {console.log(item)}
               </li>
             ))}
+            <div ref={sectionRef}></div>
           </ul>
         </div>
 
