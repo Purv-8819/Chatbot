@@ -17,29 +17,6 @@ export default function Home() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const fixResponse = () => {
-    const text = messages[messages.length - 1].content;
-    var obj = {};
-    try {
-      obj = JSON.parse(text);
-    } catch (e) {
-      obj = {
-        choices: [{ message: { content: "error" } }],
-      };
-    }
-    setMessages((messages) => {
-      let lastMessage = messages[messages.length - 1];
-      let otherMessages = messages.slice(0, messages.length - 1);
-      return [
-        ...otherMessages,
-        {
-          ...lastMessage,
-          content: obj.choices[0].message.content,
-        },
-      ];
-    });
-  };
-
   const sendMessage = async (e) => {
     e.preventDefault();
     if (!message.trim()) return; // Don't send empty messages
