@@ -15,7 +15,7 @@ export default function Home() {
     },
   ]);
   const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const fixResponse = () => {
     const text = messages[messages.length - 1].content;
