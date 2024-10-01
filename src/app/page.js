@@ -47,6 +47,7 @@ export default function Home() {
 
   const sendMessage = async (e) => {
     e.preventDefault();
+    console.log(messages);
     if (!message.trim()) return; // Don't send empty messages
 
     setMessage("");
@@ -139,40 +140,18 @@ export default function Home() {
 
         {/* <!-- Chat Container --> */}
         <div className="pr-4 h-[474px]">
-          {/* <!-- Chat Message AI --> */}
-          {/* <div className="flex gap-3 my-4 text-gray-600 text-sm flex-1">
-            <span className="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8">
-              <div className="rounded-full bg-gray-100 border p-1"></div>
-            </span>
-            <p className="leading-relaxed">
-              <span className="block font-bold text-gray-700">AI </span>Hi, how
-              can I help you today?
-            </p>
-          </div> */}
-          <AIChat></AIChat>
-
-          {/* <!--  User Chat Message --> */}
-          {/* <div className="flex gap-3 my-4 text-gray-600 text-sm flex-1">
-            <span className="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8">
-              <div className="rounded-full bg-gray-100 border p-1"></div>
-            </span>
-            <p className="leading-relaxed">
-              <span className="block font-bold text-gray-700">You </span>fewafef
-            </p>
-          </div> */}
-          <UserChat></UserChat>
-          {/* <!-- Ai Chat Message  --> */}
-          <div className="flex gap-3 my-4 text-gray-600 text-sm flex-1">
-            <span className="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8">
-              <div className="rounded-full bg-gray-100 border p-1"></div>
-            </span>
-            <p className="leading-relaxed">
-              <span className="block font-bold text-gray-700">AI </span>Sorry, I
-              couldn't find any information in the documentation about that.
-              Expect answer to be less accurateI could not find the answer to
-              this in the verified sources.
-            </p>
-          </div>
+          {/* Print out all the messages in the log and format properl*/}
+          <ul>
+            {messages.map((item, id) => (
+              <li id={id}>
+                {item.role == "user" ? (
+                  <UserChat text={item.content} />
+                ) : (
+                  <AIChat text={item.content} />
+                )}
+              </li>
+            ))}
+          </ul>
         </div>
         {/* <!-- Input box  --> */}
         <div className="flex items-center pt-0">
